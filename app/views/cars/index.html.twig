@@ -1,0 +1,39 @@
+{% extends "cars/base.twig" %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0">Classic Cars</h1>
+        <a href="/cars/create" class="btn btn-primary">Add Car</a>
+    </div>
+
+    <table class="table table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Year</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Color</th>
+                <th>Categories</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for car in cars %}
+            <tr>
+                <td>{{ car.year }}</td>
+                <td>{{ car.make.name }}</td>
+                <td>{{ car.model }}</td>
+                <td>{{ car.color }}</td>
+                <td>
+                    {% for category in car.categories %}
+                        <span class="badge text-bg-secondary">{{ category.name }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="/cars/{{ car.id }}" class="btn btn-sm btn-info">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

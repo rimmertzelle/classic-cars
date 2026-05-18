@@ -1,0 +1,82 @@
+{% extends "cars/base.twig" %}
+
+{% block content %}
+    <form method="POST" action="/cars">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <strong>Add New Car</strong>
+            </div>
+            <div class="card-body">
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="make_id">Make</label></div>
+                    <div class="col-sm-9">
+                        <select name="make_id" id="make_id" class="form-select">
+                            <option value="">— select a make —</option>
+                            {% for make in makes %}
+                                <option value="{{ make.id }}" {% if car.makeId == make.id %}selected{% endif %}>
+                                    {{ make.name }} ({{ make.country }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if errors.make_id %}<div class="invalid-feedback d-block">{{ errors.make_id }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="model">Model</label></div>
+                    <div class="col-sm-9">
+                        <input type="text" id="model" name="model" class="form-control" value="{{ car.model ?? '' }}">
+                        {% if errors.model %}<div class="invalid-feedback d-block">{{ errors.model }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="year">Year</label></div>
+                    <div class="col-sm-9">
+                        <input type="number" id="year" name="year" class="form-control" min="1886" max="2100" value="{{ car.year ?? '' }}">
+                        {% if errors.year %}<div class="invalid-feedback d-block">{{ errors.year }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="color">Color</label></div>
+                    <div class="col-sm-9">
+                        <input type="text" id="color" name="color" class="form-control" value="{{ car.color ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="engine">Engine</label></div>
+                    <div class="col-sm-9">
+                        <input type="text" id="engine" name="engine" class="form-control" value="{{ car.engine ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label>Categories</label></div>
+                    <div class="col-sm-9">
+                        {% for category in categories %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ category.id }}"
+                                       id="cat{{ category.id }}" name="categories[]">
+                                <label class="form-check-label" for="cat{{ category.id }}">{{ category.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3 fw-bold"><label for="description">Description</label></div>
+                    <div class="col-sm-9">
+                        <textarea id="description" name="description" class="form-control" rows="3">{{ car.description ?? '' }}</textarea>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <input type="submit" value="Add Car" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "cars/base.twig" %}
+
+{% block content %}
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>{{ car.year }} {{ car.make.name }} {{ car.model }}</strong>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Make</div>
+                <div class="col-sm-9">{{ car.make.name }} ({{ car.make.country }})</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Model</div>
+                <div class="col-sm-9">{{ car.model }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Year</div>
+                <div class="col-sm-9">{{ car.year }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Color</div>
+                <div class="col-sm-9">{{ car.color }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Engine</div>
+                <div class="col-sm-9">{{ car.engine }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Categories</div>
+                <div class="col-sm-9">
+                    {% for category in car.categories %}
+                        <span class="badge text-bg-secondary">{{ category.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-3 fw-bold">Description</div>
+                <div class="col-sm-9 text-break">{{ car.description }}</div>
+            </div>
+        </div>
+
+        <div class="card-footer d-flex gap-2">
+            <a href="/cars/{{ car.id }}/edit" class="btn btn-primary">Edit</a>
+            <a href="/cars" class="btn btn-secondary">Back to list</a>
+        </div>
+    </div>
+{% endblock %}

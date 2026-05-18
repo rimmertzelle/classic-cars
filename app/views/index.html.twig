@@ -1,0 +1,16 @@
+{% extends "partials/base.html.twig" %}
+
+{% set pageTitle = "Home" %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-5 mb-3">Classic Cars</h1>
+            <p class="lead text-muted">A collection of iconic automobiles from the golden age of motoring.</p>
+            <div class="d-flex gap-3 justify-content-center mt-4">
+                <a href="/cars" class="btn btn-primary btn-lg">Browse Cars (HTML)</a>
+                <a href="/api/cars" class="btn btn-outline-secondary btn-lg">Browse Cars (JSON API)</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

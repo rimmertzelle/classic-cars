@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS car_categories;
+DROP TABLE IF EXISTS cars;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS makes;
