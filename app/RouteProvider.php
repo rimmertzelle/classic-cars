@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Controllers\ApiController;
+use App\Controllers\AsyncController;
 use App\Controllers\CarController;
 use App\Controllers\HomeController;
 use Framework\Router;
@@ -33,5 +34,9 @@ class RouteProvider implements RouteProviderInterface
         $apiController = $container->get(ApiController::class);
         $router->addRoute('GET', '/api/cars', [$apiController, 'cars']);
         $router->addRoute('GET', '/api/cars/(?<id>\d+)', [$apiController, 'car']);
+
+        $asyncController = $container->get(AsyncController::class);
+        $router->addRoute('GET', '/async/cars', [$asyncController, 'index']);
+        $router->addRoute('GET', '/async/cars/(?<id>\d+)', [$asyncController, 'show']);
     }
 }

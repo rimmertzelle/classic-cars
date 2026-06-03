@@ -1,0 +1,91 @@
+{% extends "partials/base.html.twig" %}
+{% set pageTitle = "Car Detail (Async JS)" %}
+
+{% block content %}
+    <div id="car-id" data-id="{{ id }}"></div>
+
+    <div id="loading" class="text-center py-5">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Fetching car from the API...</p>
+    </div>
+
+    <div id="error" class="alert alert-danger d-none"></div>
+
+    <div id="car-card" class="d-none"></div>
+
+    <script>
+        async function loadCar() {
+            const id = document.getElementById('car-id').dataset.id;
+            const loading = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const cardEl = document.getElementById('car-card');
+
+            try {
+                const response = await fetch('/api/cars/' + id);
+                const json = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(json.error?.message ?? 'Car not found');
+                }
+
+                const car = json.data;
+
+                const categories = car.categories
+                    .map(c => `<span class="badge text-bg-secondary">${c.name}</span>`)
+                    .join(' ');
+
+                cardEl.innerHTML = `
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <strong>${car.year} ${car.make.name} ${car.model}</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-sm-3 fw-bold">Make</div>
+                                <div class="col-sm-9">${car.make.name} (${car.make.country})</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3 fw-bold">Model</div>
+                                <div class="col-sm-9">${car.model}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3 fw-bold">Year</div>
+                                <div class="col-sm-9">${car.year}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3 fw-bold">Color</div>
+                                <div class="col-sm-9">${car.color}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3 fw-bold">Engine</div>
+                                <div class="col-sm-9">${car.engine}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3 fw-bold">Categories</div>
+                                <div class="col-sm-9">${categories}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3 fw-bold">Description</div>
+                                <div class="col-sm-9 text-break">${car.description}</div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="/async/cars" class="btn btn-secondary">Back to list</a>
+                        </div>
+                    </div>
+                `;
+
+                loading.classList.add('d-none');
+                cardEl.classList.remove('d-none');
+            } catch (error) {
+                loading.classList.add('d-none');
+                errorEl.textContent = 'Failed to load car: ' + error.message;
+                errorEl.classList.remove('d-none');
+            }
+        }
+
+        loadCar();
+    </script>
+{% endblock %}

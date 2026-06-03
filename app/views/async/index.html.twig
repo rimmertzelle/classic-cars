@@ -1,0 +1,71 @@
+{% extends "partials/base.html.twig" %}
+{% set pageTitle = "Cars (Async JS)" %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0">Classic Cars <span class="badge text-bg-info fs-6">Async JS</span></h1>
+    </div>
+
+    <div id="loading" class="text-center py-5">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Fetching cars from the API...</p>
+    </div>
+
+    <div id="error" class="alert alert-danger d-none"></div>
+
+    <table id="cars-table" class="table table-striped align-middle d-none">
+        <thead class="table-dark">
+            <tr>
+                <th>Year</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Color</th>
+                <th>Categories</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="cars-tbody"></tbody>
+    </table>
+
+    <script>
+        async function loadCars() {
+            const loading = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const table = document.getElementById('cars-table');
+            const tbody = document.getElementById('cars-tbody');
+
+            try {
+                const response = await fetch('/api/cars');
+                const json = await response.json();
+
+                json.data.forEach(car => {
+                    const categories = car.categories
+                        .map(c => `<span class="badge text-bg-secondary">${c.name}</span>`)
+                        .join(' ');
+
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td>${car.year}</td>
+                            <td>${car.make.name}</td>
+                            <td>${car.model}</td>
+                            <td>${car.color}</td>
+                            <td>${categories}</td>
+                            <td><a href="/async/cars/${car.id}" class="btn btn-sm btn-info">View</a></td>
+                        </tr>
+                    `);
+                });
+
+                loading.classList.add('d-none');
+                table.classList.remove('d-none');
+            } catch (error) {
+                loading.classList.add('d-none');
+                errorEl.textContent = 'Failed to load cars: ' + error.message;
+                errorEl.classList.remove('d-none');
+            }
+        }
+
+        loadCars();
+    </script>
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Controllers\ApiController;
+use App\Controllers\AsyncController;
 use App\Controllers\CarController;
 use App\Controllers\HomeController;
 use App\Repositories\CarRepository;
@@ -44,5 +45,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $apiController = new ApiController($responseFactory, $carRepository);
         $container->set(ApiController::class, $apiController);
+
+        $asyncController = new AsyncController($responseFactory);
+        $container->set(AsyncController::class, $asyncController);
     }
 }
